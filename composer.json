@@ -1,0 +1,23 @@
+{
+    "name": "fanout/gripcontrol",
+    "description": "A GRIP library for PHP.",
+    "homepage": "https://github.com/fanout/php-gripcontrol",
+    "authors": [
+        {
+            "name": "Konstantin Bokarius",
+            "email": "kon@fanout.io",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "firebase/php-jwt": ">=1.0.0",
+        "fanout/pubcontrol": ">=1.0.4"
+    },
+    "autoload": {
+        "files": ["src/gripcontrol.php"]
+    },
+    "target-dir": "fanout/php-gripcontrol",
+    "minimum-stability": "dev"
+}
