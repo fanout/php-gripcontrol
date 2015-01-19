@@ -23,7 +23,7 @@
                   "src/httpstreamformat.php",
                   "src/response.php",
                   "src/channel.php",
-                  "src/gripubcontrol.php",
+                  "src/grippubcontrol.php",
                   "src/gripcontrol.php"]
     },
     "target-dir": "fanout/php-gripcontrol",
