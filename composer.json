@@ -16,7 +16,15 @@
         "fanout/pubcontrol": ">=1.0.5"
     },
     "autoload": {
-        "files": ["src/gripcontrol.php"]
+        "files": ["src/encoding.php",
+                  "src/websocketmessageformat.php",
+                  "src/websocketevent.php",
+                  "src/httpresponseformat.php",
+                  "src/httpstreamformat.php",
+                  "src/response.php",
+                  "src/channel.php",
+                  "src/gripubcontrol.php",
+                  "src/gripcontrol.php"]
     },
     "target-dir": "fanout/php-gripcontrol",
     "minimum-stability": "dev"

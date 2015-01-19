@@ -101,7 +101,7 @@ class GripControl
     {
         try
         {
-            JWT::decode($claim, $key, true);
+            JWT::decode($token, $key, true);
             return true;
         }
         catch (Exception $e)
