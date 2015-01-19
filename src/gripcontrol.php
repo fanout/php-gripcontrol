@@ -91,7 +91,7 @@ class GripControl
             $control_uri .= '?' . $qs;
         $out = array('control_uri' => $control_uri);
         if (!is_null($iss))
-            $out['iss'] = $iss;
+            $out['control_iss'] = $iss;
         if (!is_null($key))
             $out['key'] = $key;
         return $out;
