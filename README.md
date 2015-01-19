@@ -55,5 +55,7 @@ WebSocket over HTTP example using the WEBrick gem. In this case, a client connec
 Parse a GRIP URI to extract the URI, ISS, and key values. The values will be returned in a hash containing 'control_uri', 'control_iss', and 'key' keys.
 
 ```PHP
-
+$config = GripControl::parse_grip_uri(
+    'http://api.fanout.io/realm/<myrealm>?iss=<myrealm>' .
+    '&key=base64:<myrealmkey>');
 ```
