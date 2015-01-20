@@ -10,6 +10,15 @@ License
 
 php-gripcontrol is offered under the MIT license. See the LICENSE file.
 
+Requirements
+------------
+
+* openssl
+* curl
+* pthreads (required for asynchronous publishing)
+* firebase/php-jwt >=1.0.0 (retreived automatically via Composer)
+* fanout/php-pubcontrol >=1.0.6 (retreived automatically via Composer)
+
 Installation
 ------------
 
@@ -173,7 +182,8 @@ if ($in_events[0]->type == 'OPEN')
     echo $response;
     ob_flush();
     flush();
-    (new PublishMessage())->start();
+    $publish_message = new PublishMessage();
+    $publish_message->start();
 }
 ?>
 ```
