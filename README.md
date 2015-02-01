@@ -82,7 +82,7 @@ $grippub->remove_all_clients();
 
 # Explicitly add an endpoint as a PubControlClient instance:
 $pubclient = new PubControlClient('<my_endpoint_uri>');
-# Optionally set JWT auth: $pubclient->set_auth_jwt('<claim>', '<key>')
+# Optionally set JWT auth: $pubclient->set_auth_jwt(<claim>, '<key>')
 # Optionally set basic auth: $pubclient->set_auth_basic('<user>', '<password>')
 $grippub->add_client($pubclient);
 
@@ -120,6 +120,8 @@ if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
 http_response_code(200);
 header('Grip-Hold: response');
 header('Grip-Channel: ' . GripControl::create_grip_channel_header('<channel>'));
+# To optionally set a timeout value in seconds:
+# header('Grip-Timeout: <timeout_value>');
 ?>
 ```
 
@@ -136,6 +138,8 @@ if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
 http_response_code(200);
 header('Content-Type: application/grip-instruct');
 echo GripControl::create_hold_response('<channel>');
+# Or to optionally set a timeout value in seconds:
+# echo GripControl::create_hold_response('<channel>', null, <timeout_value>);
 ?>
 ```
 

@@ -9,7 +9,8 @@
 
 class GripControl
 {
-    public static function create_hold($mode, $channels, $response)
+    public static function create_hold($mode, $channels, $response,
+            $timeout=null)
     {
         $hold = array();
         $hold['mode'] = $mode;
@@ -31,6 +32,10 @@ class GripControl
             $ichannels[] = $ichannel;
         }
         $hold['channels'] = $ichannels;
+        if (!is_null($timeout))
+        {
+            $hold['timeout'] = $timeout;
+        }
         $iresponse = null;
         if (!is_null($response))
         {
@@ -129,9 +134,10 @@ class GripControl
         return implode(',', $parts);
     }
 
-    public static function create_hold_response($channels, $response=null)
+    public static function create_hold_response($channels, $response=null,
+            $timeout=null)
     {
-        return self::create_hold('response', $channels, $response);
+        return self::create_hold('response', $channels, $response, $timeout);
     }
 
     public static function create_hold_stream($channels, $response=null)
