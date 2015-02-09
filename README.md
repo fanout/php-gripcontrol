@@ -63,39 +63,40 @@ function callback($result, $message)
         Print "Publish failed with message: {$message}\r\n";
 }
 
-# GripPubControl can be initialized with or without an endpoint configuration.
-# Each endpoint can include optional JWT authentication info.
-# Multiple endpoints can be included in a single configuration.
+// GripPubControl can be initialized with or without an endpoint configuration.
+// Each endpoint can include optional JWT authentication info.
+// Multiple endpoints can be included in a single configuration.
 
 $grippub = new GripPubControl(array(
         'control_uri' => 'https://api.fanout.io/realm/<myrealm>',
         'control_iss' => '<myrealm>',
         'key' => Base64.decode64('<myrealmkey>')));
 
-# Add new endpoints by applying an endpoint configuration:
+// Add new endpoints by applying an endpoint configuration:
 $grippub->apply_grip_config(array(
         array('control_uri' => '<myendpoint_uri_1>'), 
         array('control_uri' => '<myendpoint_uri_2>')));
 
-# Remove all configured endpoints:
+// Remove all configured endpoints:
 $grippub->remove_all_clients();
 
-# Explicitly add an endpoint as a PubControlClient instance:
+// Explicitly add an endpoint as a PubControlClient instance:
 $pubclient = new PubControlClient('<my_endpoint_uri>');
-# Optionally set JWT auth: $pubclient->set_auth_jwt(<claim>, '<key>')
-# Optionally set basic auth: $pubclient->set_auth_basic('<user>', '<password>')
+// Optionally set JWT auth: $pubclient->set_auth_jwt(<claim>, '<key>')
+// Optionally set basic auth: $pubclient->set_auth_basic('<user>', '<password>')
 $grippub->add_client($pubclient);
 
-# Publish across all configured endpoints:
+// Publish across all configured endpoints:
 $grippub->publish_http_response('<channel>', 'Test publish!');
-$grippub->publish_http_response_async('<channel>', 'Test async publish!',
-        null, null, 'callback');
 $grippub->publish_http_stream('<channel>', 'Test publish!');
-$grippub->publish_http_stream_async('<channel>', 'Test async publish!',
-        null, null, 'callback');
 
-# Wait for all async publish calls to complete:
-$grippub->finish();
+// Use publish_async for async publishing only if pthreads are installed:
+// $grippub->publish_http_response_async('<channel>', 'Test async publish!',
+//         null, null, 'callback');
+// $grippub->publish_http_stream_async('<channel>', 'Test async publish!',
+//         null, null, 'callback');
+// Wait for all async publish calls to complete:
+// $grippub->finish();
 ?>
 ```
 
@@ -111,17 +112,17 @@ Long polling example via response _headers_. The client connects to a GRIP proxy
 
 ```PHP
 <?php
-# Validate the Grip-Sig header:
+// Validate the Grip-Sig header:
 $request_headers = getallheaders();
 if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
     return;
 
-# Instruct the client to long poll via the response headers:
+// Instruct the client to long poll via the response headers:
 http_response_code(200);
 header('Grip-Hold: response');
 header('Grip-Channel: ' . GripControl::create_grip_channel_header('<channel>'));
-# To optionally set a timeout value in seconds:
-# header('Grip-Timeout: <timeout_value>');
+// To optionally set a timeout value in seconds:
+// header('Grip-Timeout: <timeout_value>');
 ?>
 ```
 
@@ -129,17 +130,17 @@ Long polling example via response _body_. The client connects to a GRIP proxy ov
 
 ```PHP
 <?php
-# Validate the Grip-Sig header:
+// Validate the Grip-Sig header:
 $request_headers = getallheaders();
 if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
     return;
 
-# Instruct the client to long poll via the response body:
+// Instruct the client to long poll via the response body:
 http_response_code(200);
 header('Content-Type: application/grip-instruct');
 echo GripControl::create_hold_response('<channel>');
-# Or to optionally set a timeout value in seconds:
-# echo GripControl::create_hold_response('<channel>', null, <timeout_value>);
+// Or to optionally set a timeout value in seconds:
+// echo GripControl::create_hold_response('<channel>', null, <timeout_value>);
 ?>
 ```
 
@@ -152,7 +153,7 @@ class PublishMessage extends Thread
 {
     public function run()
     {
-        # Wait and then publish a message to the subscribed channel:
+        // Wait and then publish a message to the subscribed channel:
         sleep(5);
         $grippub = new GripPubControl(array('control_uri' => '<myendpoint>'));
         $grippub->publish('<channel>', new Item(
@@ -160,12 +161,12 @@ class PublishMessage extends Thread
     }
 }
 
-# Validate the Grip-Sig header:
+// Validate the Grip-Sig header:
 $request_headers = getallheaders();
 if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
     return;
 
-# Set the headers required by the GRIP proxy:
+// Set the headers required by the GRIP proxy:
 header('Content-Type: application/websocket-events');
 header('Sec-WebSocket-Extensions: grip; message-prefix=""');
 http_response_code(200);
@@ -173,7 +174,7 @@ $in_events = GripControl::decode_websocket_events(
         file_get_contents("php://input"));
 if ($in_events[0]->type == 'OPEN')
 {
-    # Open the WebSocket and subscribe it to a channel:
+    // Open the WebSocket and subscribe it to a channel:
     $out_events = array();
     $out_events[] = new WebSocketEvent('OPEN');
     $out_events[] = new WebSocketEvent('TEXT', 'c:' .
