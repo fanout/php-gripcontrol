@@ -33,9 +33,9 @@ class HttpStreamFormat extends Format
         else
         {
             if (Encoding::is_binary_data($this->content))
-                $out['body-bin'] = base64_encode($this->content);
+                $out['content-bin'] = base64_encode($this->content);
             else
-                $out['body'] = $this->content;
+                $out['content'] = $this->content;
         }
         return $out;
     }
