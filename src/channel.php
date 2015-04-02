@@ -7,11 +7,14 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+// The Channel class is used to represent a channel in for a GRIP proxy and
+// tracks the previous ID of the last message.
 class Channel
 {
     public $name = null;
     public $prev_id = null;
 
+    // Initialize with the channel name and an optional previous ID.
     public function __construct($name, $prev_id=null)
     {
         $this->name = $name;

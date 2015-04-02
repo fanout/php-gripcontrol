@@ -7,6 +7,8 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+// The HttpResponseFormat class is the format used to publish messages to
+// HTTP response clients connected to a GRIP proxy.
 class HttpResponseFormat extends Format
 {
     public $code = null;
@@ -14,6 +16,8 @@ class HttpResponseFormat extends Format
     public $headers = null;
     public $body = null;
 
+    // Initialize with the message code, reason, headers, and body to send
+    // to the client when the message is published.
     public function __construct($code=null, $reason=null,
             $headers=null, $body=null)
     {
@@ -23,11 +27,15 @@ class HttpResponseFormat extends Format
         $this->body = $body;
     }
 
+    // The name used when publishing this format.
     public function name()
     {
         return 'http-response';
     }
 
+    // Export the message into the required format and include only the fields
+    // that are set. The body is exported as base64 if the text is encoded as
+    // binary.
     public function export()
     {
         $out = array();

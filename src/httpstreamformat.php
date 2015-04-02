@@ -7,11 +7,16 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+// The HttpStreamFormat class is the format used to publish messages to
+// HTTP stream clients connected to a GRIP proxy.
 class HttpStreamFormat extends Format
 {
     public $content = null;
     public $close = null;
 
+    // Initialize with either the message content or a boolean indicating that
+    // the streaming connection should be closed. If neither the content nor
+    // the boolean flag is set then an error will be raised.
     public function __construct($content=null, $close=false)
     {
         $this->content = $content;
@@ -20,11 +25,15 @@ class HttpStreamFormat extends Format
             throw new RuntimeException('Content not set');
     }
 
+    // The name used when publishing this format.
     public function name()
     {
         return 'http-stream';
     }
 
+    // Exports the message in the required format depending on whether the
+    // message content is binary or not, or whether the connection should
+    // be closed.
     public function export()
     {
         $out = array();

@@ -7,8 +7,16 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+// The GripPubControl class allows consumers to easily publish HTTP response
+// and HTTP stream format messages to GRIP proxies. Configuring GripPubControl
+// is slightly different from configuring PubControl in that the 'uri' and
+// 'iss' keys in each config entry should have a 'control_' prefix.
+// GripPubControl inherits from PubControl and therefore also provides all
+// of the same functionality.
 class GripPubControl extends PubControl
 {
+    // Initialize with or without a configuration. A configuration can be applied
+    // after initialization via the apply_grip_config method.
     public function __construct($config=null)
     {
         $this->clients = array();
@@ -17,6 +25,11 @@ class GripPubControl extends PubControl
             $this->apply_grip_config($config);
     }
 
+    // Apply the specified configuration to this GripPubControl instance. The
+    // configuration object can either be a hash or an array of hashes where
+    // each hash corresponds to a single PubControlClient instance. Each hash
+    // will be parsed and a PubControlClient will be created either using just
+    // a URI or a URI and JWT authentication information.
     public function apply_grip_config($config)
     {
         if (!is_array(reset($config)))
@@ -33,6 +46,12 @@ class GripPubControl extends PubControl
         }
     }
 
+    // Synchronously publish an HTTP response format message to all of the
+    // configured PubControlClients with a specified channel, message, and
+    // optional ID and previous ID. Note that the 'http_response' parameter can
+    // be provided as either an HttpResponseFormat instance or a string (in which
+    // case an HttpResponseFormat instance will automatically be created and
+    // have the 'body' field set to the specified string).
     public function publish_http_response($channel, $http_response,
             $id=null, $prev_id=null)
     {
@@ -43,6 +62,14 @@ class GripPubControl extends PubControl
         parent::publish($channel, $item);
     }
 
+    // Asynchronously publish an HTTP response format message to all of the
+    // configured PubControlClients with a specified channel, message, and
+    // optional ID, previous ID, and callback. Note that the 'http_response'
+    // parameter can be provided as either an HttpResponseFormat instance or
+    // a string (in which case an HttpResponseFormat instance will automatically
+    // be created and have the 'body' field set to the specified string). When
+    // specified, the callback method will be called after publishing is complete
+    // and passed a result and error message (if an error was encountered).
     public function publish_http_response_async($channel, $http_response,
             $id=null, $prev_id=null, $callback=null)
     {
@@ -53,6 +80,12 @@ class GripPubControl extends PubControl
         parent::publish_async($channel, $item, $callback);
     }
 
+    // Synchronously publish an HTTP stream format message to all of the
+    // configured PubControlClients with a specified channel, message, and
+    // optional ID and previous ID. Note that the 'http_stream' parameter can
+    // be provided as either an HttpStreamFormat instance or a string (in which
+    // case an HttStreamFormat instance will automatically be created and
+    // have the 'content' field set to the specified string).
     public function publish_http_stream($channel, $http_stream,
             $id=null, $prev_id=null)
     {
@@ -62,6 +95,14 @@ class GripPubControl extends PubControl
         parent::publish($channel, $item);
     }
 
+    // Asynchronously publish an HTTP stream format message to all of the
+    // configured PubControlClients with a specified channel, message, and
+    // optional ID, previous ID, and callback. Note that the 'http_stream'
+    // parameter can be provided as either an HttpStreamFormat instance or
+    // a string (in which case an HttpStreamFormat instance will automatically
+    // be created and have the 'content' field set to the specified string). When
+    // specified, the callback method will be called after publishing is complete
+    // and passed a result and error message (if an error was encountered).
     public function publish_http_stream_async($channel, $http_stream,
             $id=null, $prev_id=null, $callback=null)
     {

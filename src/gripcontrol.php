@@ -7,8 +7,21 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+// The GripControl class provides functionality that is used in conjunction
+// with GRIP proxies. This includes facilitating the creation of hold
+// instructions for HTTP long-polling and HTTP streaming, parsing GRIP URIs
+// into config objects, validating the GRIP-SIG header coming from GRIP
+// proxies, creating GRIP channel headers, and also WebSocket-over-HTTP
+// features such as encoding/decoding web socket events and generating
+// control messages.
 class GripControl
 {
+
+    // Create GRIP hold instructions for the specified mode, channels, response
+    // and optional timeout value. The channel parameter can be specified as
+    // either a string representing the channel name, a Channel instance or an
+    // array of Channel instances. The response parameter can be specified as
+    // either a string representing the response body or a Response instance.
     public static function create_hold($mode, $channels, $response,
             $timeout=null)
     {
@@ -63,6 +76,11 @@ class GripControl
         return json_encode($instruct);
     }
 
+    // Parse the specified GRIP URI into a config object that can then be passed
+    // to the GripPubControl class. The URI can include 'iss' and 'key' JWT
+    // authentication query parameters as well as any other required query string
+    // parameters. The JWT 'key' query parameter can be provided as-is or in base64
+    // encoded format.
     public static function parse_grip_uri($uri)
     {
         $uri = parse_url($uri);
@@ -102,6 +120,9 @@ class GripControl
         return $out;
     }
 
+    // Validate the specified JWT token and key. This method is used to validate
+    // the GRIP-SIG header coming from GRIP proxies such as Pushpin or Fanout.io.
+    // Note that the token expiration is also verified.
     public static function validate_sig($token, $key)
     {
         try
@@ -115,6 +136,11 @@ class GripControl
         }
     }
 
+    // Create a GRIP channel header for the specified channels. The channels
+    // parameter can be specified as a string representing the channel name,
+    // a Channel instance, or an array of Channel instances. The returned GRIP
+    // channel header is used when sending instructions to GRIP proxies via
+    // HTTP headers.
     public static function create_grip_channel_header($channels)
     {
         if (is_a($channels, 'Channel'))
@@ -134,17 +160,26 @@ class GripControl
         return implode(',', $parts);
     }
 
+    // A convenience method for creating GRIP hold response instructions for HTTP
+    // long-polling. This method simply passes the specified parameters to the
+    // create_hold method with 'response' as the hold mode.
     public static function create_hold_response($channels, $response=null,
             $timeout=null)
     {
         return self::create_hold('response', $channels, $response, $timeout);
     }
 
+    // A convenience method for creating GRIP hold stream instructions for HTTP
+    // streaming. This method simply passes the specified parameters to the
+    // create_hold method with 'stream' as the hold mode.
     public static function create_hold_stream($channels, $response=null)
     {
         return self::create_hold('stream', $channels, $response);
     }
 
+    // Decode the specified HTTP request body into an array of WebSocketEvent
+    // instances when using the WebSocket-over-HTTP protocol. A RuntimeError
+    // is raised if the format is invalid.
     public static function decode_websocket_events($body)
     {
         $out = array();
@@ -174,6 +209,9 @@ class GripControl
         return $out;
     }
 
+    // Encode the specified array of WebSocketEvent instances. The returned string
+    // value should then be passed to a GRIP proxy in the body of an HTTP response
+    // when using the WebSocket-over-HTTP protocol.
     public static function encode_websocket_events($events)
     {
         $out = '';
@@ -191,6 +229,10 @@ class GripControl
         return $out;
     }
 
+    // Generate a WebSocket control message with the specified type and optional
+    // arguments. WebSocket control messages are passed to GRIP proxies and
+    // example usage includes subscribing/unsubscribing a WebSocket connection
+    // to/from a channel.
     public static function websocket_control_message($type, $args=null)
     {
         $out = array();

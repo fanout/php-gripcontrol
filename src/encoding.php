@@ -7,8 +7,11 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+// The Encoding class provides helper methods related to encoding.
 class Encoding
 {
+
+    // Determine whether the specified data is binary or not.
     public static function is_binary_data($data)
     {
         if (preg_match('!!u', $data))
