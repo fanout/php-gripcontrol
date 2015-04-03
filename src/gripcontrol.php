@@ -25,50 +25,16 @@ class GripControl
     public static function create_hold($mode, $channels, $response,
             $timeout=null)
     {
+        $channels = self::parse_channels($channels);
+        $ichannels = self::get_hold_channels($channels);
         $hold = array();
         $hold['mode'] = $mode;
-        if (is_a($channels, 'Channel'))
-            $channels = array($channels);
-        elseif (is_string($channels))
-            $channels = array(new Channel($channels));
-        if (count($channels) == 0)
-            throw new RuntimeException('channels length is 0');
-        $ichannels = array();
-        foreach ($channels as $channel)
-        {
-            if (is_string($channel))
-                $channel = new Channel($channel);
-            $ichannel = array();
-            $ichannel['name'] = $channel->name;
-            if (!is_null($channel->prev_id))
-                $ichannel['prev-id'] = $channel->prev_id;
-            $ichannels[] = $ichannel;
-        }
         $hold['channels'] = $ichannels;
         if (!is_null($timeout))
         {
             $hold['timeout'] = $timeout;
         }
-        $iresponse = null;
-        if (!is_null($response))
-        {
-            if (is_string($response))
-                $response = new Response(null, null, null, $response);
-            $iresponse = array();
-            if (!is_null($response->code))
-                $iresponse['code'] = $response->code;
-            if (!is_null($response->reason))
-                $iresponse['reason'] = $response->reason;
-            if (!is_null($response->headers) && count($response->headers) > 0)
-                $iresponse['headers'] = $response->headers;
-            if (!is_null($response->body))
-            {
-                if (Encoding::is_binary_data($response->body))
-                    $iresponse['body-bin'] = base64_encode($response->body);
-                else
-                    $iresponse['body'] = $response->body;
-            }
-        }
+        $iresponse = self::get_hold_response($response);
         $instruct = array();
         $instruct['hold'] = $hold;
         if (!is_null($iresponse))
@@ -85,7 +51,8 @@ class GripControl
     {
         $uri = parse_url($uri);
         $params = array();
-        parse_str($uri['query'], $params);
+        if (array_key_exists('query', $uri))
+            parse_str($uri['query'], $params);
         $iss = null;
         $key = null;
         if (array_key_exists('iss', $params))
@@ -143,12 +110,7 @@ class GripControl
     // HTTP headers.
     public static function create_grip_channel_header($channels)
     {
-        if (is_a($channels, 'Channel'))
-            $channels = array($channels);
-        elseif (is_string($channels))
-            $channels = array(new Channel($channels));
-        if (count($channels) == 0)
-            throw new RuntimeException('channels length is 0');
+        $channels = self::parse_channels($channels);
         $parts = array();
         foreach ($channels as $channel)
         {
@@ -157,7 +119,7 @@ class GripControl
                 $s .= "; prev-id={$channel->prev_id}";
             $parts[] = $s;
         }
-        return implode(',', $parts);
+        return implode(', ', $parts);
     }
 
     // A convenience method for creating GRIP hold response instructions for HTTP
@@ -197,7 +159,6 @@ class GripControl
             {
                 $etype = substr($typeline, 0, $at);
                 $clen = intval('0x' . substr($typeline, $at + 1), 16);
-                Print $at . ":::" . $clen . "\r\n";
                 $content = substr($body, $start, $clen);
                 $start += $clen + 2;
                 $e = new WebSocketEvent($etype, $content);
@@ -241,5 +202,67 @@ class GripControl
         $out['type'] = $type;
         return json_encode($out);
     }
+
+    // An internal method used to parse the specified parameter into an array
+    // of Channel instances. The specified parameter can either be a string, a
+    // Channel instance, or an array of Channel instances.
+    protected static function parse_channels($channels)
+    {
+        if (is_a($channels, 'Channel'))
+            $channels = array($channels);
+        elseif (is_string($channels))
+            $channels = array(new Channel($channels));
+        if (count($channels) == 0)
+            throw new RuntimeException('channels length is 0');
+        return $channels;
+    }
+
+    // An internal method for getting an array of hashes representing the
+    // specified channels parameter. The resulting array is used for creating
+    // GRIP proxy hold instructions.
+    protected static function get_hold_channels($channels)
+    {
+        $ichannels = array();
+        foreach ($channels as $channel)
+        {
+            if (is_string($channel))
+                $channel = new Channel($channel);
+            $ichannel = array();
+            $ichannel['name'] = $channel->name;
+            if (!is_null($channel->prev_id))
+                $ichannel['prev-id'] = $channel->prev_id;
+            $ichannels[] = $ichannel;
+        }
+        return $ichannels;
+    }
+
+    // An internal method for getting a hash representing the specified
+    // response parameter. The resulting hash is used for creating GRIP
+    // proxy hold instructions.
+    protected static function get_hold_response($response)
+    {
+        $iresponse = null;
+        if (!is_null($response))
+        {
+            if (is_string($response))
+                $response = new Response(null, null, null, $response);
+            $iresponse = array();
+            if (!is_null($response->code))
+                $iresponse['code'] = $response->code;
+            if (!is_null($response->reason))
+                $iresponse['reason'] = $response->reason;
+            if (!is_null($response->headers) && count($response->headers) > 0)
+                $iresponse['headers'] = $response->headers;
+            if (!is_null($response->body))
+            {
+                if (Encoding::is_binary_data($response->body))
+                    $iresponse['body-bin'] = base64_encode($response->body);
+                else
+                    $iresponse['body'] = $response->body;
+            }
+        }
+        return $iresponse;
+    }
 }
+
 ?>
