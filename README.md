@@ -67,7 +67,7 @@ function callback($result, $message)
 // Each endpoint can include optional JWT authentication info.
 // Multiple endpoints can be included in a single configuration.
 
-$grippub = new GripPubControl(array(
+$grippub = new GripControl\GripPubControl(array(
         'control_uri' => 'https://api.fanout.io/realm/<myrealm>',
         'control_iss' => '<myrealm>',
         'key' => Base64.decode64('<myrealmkey>')));
@@ -81,7 +81,7 @@ $grippub->apply_grip_config(array(
 $grippub->remove_all_clients();
 
 // Explicitly add an endpoint as a PubControlClient instance:
-$pubclient = new PubControlClient('<my_endpoint_uri>');
+$pubclient = new PubControl\PubControlClient('<my_endpoint_uri>');
 // Optionally set JWT auth: $pubclient->set_auth_jwt(<claim>, '<key>')
 // Optionally set basic auth: $pubclient->set_auth_basic('<user>', '<password>')
 $grippub->add_client($pubclient);
@@ -104,7 +104,7 @@ Validate the Grip-Sig request header from incoming GRIP messages. This ensures t
 
 ```PHP
 <?php
-$is_valid = GripControl::validate_sig(headers['Grip-Sig'], '<key>');
+$is_valid = GripControl\GripControl::validate_sig(headers['Grip-Sig'], '<key>');
 ?>
 ```
 
@@ -114,13 +114,14 @@ Long polling example via response _headers_. The client connects to a GRIP proxy
 <?php
 // Validate the Grip-Sig header:
 $request_headers = getallheaders();
-if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
+if (!GripControl\GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
     return;
 
 // Instruct the client to long poll via the response headers:
 http_response_code(200);
 header('Grip-Hold: response');
-header('Grip-Channel: ' . GripControl::create_grip_channel_header('<channel>'));
+header('Grip-Channel: ' .
+        GripControl\GripControl::create_grip_channel_header('<channel>'));
 // To optionally set a timeout value in seconds:
 // header('Grip-Timeout: <timeout_value>');
 ?>
@@ -132,15 +133,16 @@ Long polling example via response _body_. The client connects to a GRIP proxy ov
 <?php
 // Validate the Grip-Sig header:
 $request_headers = getallheaders();
-if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
+if (!GripControl\GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
     return;
 
 // Instruct the client to long poll via the response body:
 http_response_code(200);
 header('Content-Type: application/grip-instruct');
-echo GripControl::create_hold_response('<channel>');
+echo GripControl\GripControl::create_hold_response('<channel>');
 // Or to optionally set a timeout value in seconds:
-// echo GripControl::create_hold_response('<channel>', null, <timeout_value>);
+// echo GripControl\GripControl::create_hold_response(
+//        '<channel>', null, <timeout_value>);
 ?>
 ```
 
@@ -155,32 +157,34 @@ class PublishMessage extends Thread
     {
         // Wait and then publish a message to the subscribed channel:
         sleep(5);
-        $grippub = new GripPubControl(array('control_uri' => '<myendpoint>'));
-        $grippub->publish('<channel>', new Item(
-                new WebSocketMessageFormat('Test WebSocket publish!!')));
+        $grippub = new GripControl\GripPubControl(
+                array('control_uri' => '<myendpoint>'));
+        $grippub->publish('<channel>', new PubControl\Item(
+                new GripControl\WebSocketMessageFormat(
+                'Test WebSocket publish!!')));
     }
 }
 
 // Validate the Grip-Sig header:
 $request_headers = getallheaders();
-if (!GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
+if (!GripControl\GripControl::validate_sig($request_headers['Grip-Sig'], '<key>'))
     return;
 
 // Set the headers required by the GRIP proxy:
 header('Content-Type: application/websocket-events');
 header('Sec-WebSocket-Extensions: grip; message-prefix=""');
 http_response_code(200);
-$in_events = GripControl::decode_websocket_events(
+$in_events = GripControl\GripControl::decode_websocket_events(
         file_get_contents("php://input"));
 if ($in_events[0]->type == 'OPEN')
 {
     // Open the WebSocket and subscribe it to a channel:
     $out_events = array();
-    $out_events[] = new WebSocketEvent('OPEN');
-    $out_events[] = new WebSocketEvent('TEXT', 'c:' .
-    GripControl::websocket_control_message('subscribe',
+    $out_events[] = new GripControl\WebSocketEvent('OPEN');
+    $out_events[] = new GripControl\WebSocketEvent('TEXT', 'c:' .
+    GripControl\GripControl::websocket_control_message('subscribe',
             array('channel' => '<channel>')));
-    $response = GripControl::encode_websocket_events($out_events);
+    $response = GripControl\GripControl::encode_websocket_events($out_events);
     ignore_user_abort(true);
     header("Connection: close");
     header("Content-Length: " . strlen($response));
@@ -197,7 +201,7 @@ Parse a GRIP URI to extract the URI, ISS, and key values. The values will be ret
 
 ```PHP
 <?php
-$config = GripControl::parse_grip_uri(
+$config = GripControl\GripControl::parse_grip_uri(
     'http://api.fanout.io/realm/<myrealm>?iss=<myrealm>' .
     '&key=base64:<myrealmkey>');
 ?>
