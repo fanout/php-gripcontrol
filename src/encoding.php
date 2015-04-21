@@ -7,6 +7,8 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The Encoding class provides helper methods related to encoding.
 class Encoding
 {

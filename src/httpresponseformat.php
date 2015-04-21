@@ -7,9 +7,11 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The HttpResponseFormat class is the format used to publish messages to
 // HTTP response clients connected to a GRIP proxy.
-class HttpResponseFormat extends Format
+class HttpResponseFormat extends \PubControl\Format
 {
     public $code = null;
     public $reason = null;

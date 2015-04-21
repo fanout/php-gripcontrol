@@ -7,13 +7,15 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The GripPubControl class allows consumers to easily publish HTTP response
 // and HTTP stream format messages to GRIP proxies. Configuring GripPubControl
 // is slightly different from configuring PubControl in that the 'uri' and
 // 'iss' keys in each config entry should have a 'control_' prefix.
 // GripPubControl inherits from PubControl and therefore also provides all
 // of the same functionality.
-class GripPubControl extends PubControl
+class GripPubControl extends \PubControl\PubControl
 {
     // Initialize with or without a configuration. A configuration can be applied
     // after initialization via the apply_grip_config method.
@@ -38,7 +40,7 @@ class GripPubControl extends PubControl
         {
             if (!array_key_exists('control_uri', $entry))
                 continue;    
-            $pub = new PubControlClient($entry['control_uri']);
+            $pub = new \PubControl\PubControlClient($entry['control_uri']);
             if (array_key_exists('control_iss', $entry))
                 $pub->set_auth_jwt(array('iss' => $entry['control_iss']), 
                         $entry['key']);
@@ -58,7 +60,7 @@ class GripPubControl extends PubControl
         if (is_string($http_response))
             $http_response = new HttpResponseFormat(null, null, null,
                     $http_response);
-        $item = new Item($http_response, $id, $prev_id);
+        $item = new \PubControl\Item($http_response, $id, $prev_id);
         parent::publish($channel, $item);
     }
 
@@ -76,7 +78,7 @@ class GripPubControl extends PubControl
         if (is_string($http_response))
             $http_response = new HttpResponseFormat(null, null, null,
                     $http_response);
-        $item = new Item($http_response, $id, $prev_id);
+        $item = new \PubControl\Item($http_response, $id, $prev_id);
         parent::publish_async($channel, $item, $callback);
     }
 
@@ -91,7 +93,7 @@ class GripPubControl extends PubControl
     {
         if (is_string($http_stream))
             $http_stream = new HttpStreamFormat($http_stream);
-        $item = new Item($http_stream, $id, $prev_id);
+        $item = new \PubControl\Item($http_stream, $id, $prev_id);
         parent::publish($channel, $item);
     }
 
@@ -108,7 +110,7 @@ class GripPubControl extends PubControl
     {
         if (is_string($http_stream))
             $http_stream = new HttpStreamFormat($http_stream);
-        $item = new Item($http_stream, $id, $prev_id);
+        $item = new \PubControl\Item($http_stream, $id, $prev_id);
         parent::publish_async($channel, $item, $callback);
     }
 }

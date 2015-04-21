@@ -7,9 +7,11 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The WebSocketMessageFormat class is the format used to publish data to
 // WebSocket clients connected to GRIP proxies.
-class WebSocketMessageFormat extends Format
+class WebSocketMessageFormat extends \PubControl\Format
 {
     public $content = null;
 

@@ -7,6 +7,8 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The GripControl class provides functionality that is used in conjunction
 // with GRIP proxies. This includes facilitating the creation of hold
 // instructions for HTTP long-polling and HTTP streaming, parsing GRIP URIs
@@ -94,10 +96,10 @@ class GripControl
     {
         try
         {
-            JWT::decode($token, $key, true);
+            \JWT::decode($token, $key, true);
             return true;
         }
-        catch (Exception $e)
+        catch (\Exception $e)
         {
             return false;
         }
@@ -150,7 +152,7 @@ class GripControl
         {
             $at = strpos($body, "\r\n", $start);
             if ($at === false)
-                throw new RuntimeException('bad format');
+                throw new \RuntimeException('bad format');
             $typeline = substr($body, $start, $at - $start);
             $start = $at + 2;
             $at = strpos($typeline, ' ');
@@ -208,12 +210,12 @@ class GripControl
     // Channel instance, or an array of Channel instances.
     protected static function parse_channels($channels)
     {
-        if (is_a($channels, 'Channel'))
+        if ($channels instanceof Channel)
             $channels = array($channels);
         elseif (is_string($channels))
             $channels = array(new Channel($channels));
         if (count($channels) == 0)
-            throw new RuntimeException('channels length is 0');
+            throw new \RuntimeException('channels length is 0');
         return $channels;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-class GripPubControlTestClass extends GripPubControl
+class GripPubControlTestClass extends GripControl\GripPubControl
 {
     public function getClients()
     {
@@ -47,7 +47,7 @@ class PubControlClientAsyncTestClass
     }
 }
 
-class GripPubControlTestClassNoAsync extends GripPubControl
+class GripPubControlTestClassNoAsync extends GripControl\GripPubControl
 {
     public function is_async_supported()
     {
@@ -131,7 +131,7 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
 
     public function testPublishHttpResponse1()
     {
-        $pc = new GripPubControl();
+        $pc = new GripControl\GripPubControl();
         $pcc1 = new PubControlClientTestClass();
         $pcc2 = new PubControlClientTestClass();
         $pc->add_client($pcc1);
@@ -140,24 +140,24 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
         $this->assertTrue($pcc1->was_publish_called);
         $this->assertEquals($pcc1->publish_channel, 'chan');
         $this->assertEquals($pcc1->publish_item->export(),
-                (new Item(new HttpResponseFormat(null, null, null,
+                (new PubControl\Item(new GripControl\HttpResponseFormat(null, null, null,
                 'data')))->export());
     }
 
     public function testPublishHttpResponse2()
     {
-        $pc = new GripPubControl();
+        $pc = new GripControl\GripPubControl();
         $pcc1 = new PubControlClientTestClass();
         $pcc2 = new PubControlClientTestClass();
         $pc->add_client($pcc1);
         $pc->add_client($pcc2);
-        $response = new HttpResponseFormat('code', 'reason', 'headers',
+        $response = new GripControl\HttpResponseFormat('code', 'reason', 'headers',
                 'data');
         $pc->publish_http_response('chan', $response, 'id', 'prev-id');
         $this->assertTrue($pcc1->was_publish_called);
         $this->assertEquals($pcc1->publish_channel, 'chan');
         $this->assertEquals($pcc1->publish_item->export(),
-                (new Item($response, 'id', 'prev-id'))->export());
+                (new PubControl\Item($response, 'id', 'prev-id'))->export());
     }
 
     /**
@@ -171,7 +171,7 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
 
     public function testPublishHttpResponsehAsync()
     {
-        $pc = new GripPubControl();
+        $pc = new GripControl\GripPubControl();
         $callback = new CallbackTestClass();
         $pcc1 = new PubControlClientAsyncTestClass('uri');
         $pcc2 = new PubControlClientAsyncTestClass('uri');
@@ -183,15 +183,15 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
                 array($callback, "callback"));
         $this->assertEquals($pcc1->publish_channel, 'chan');
         $this->assertEquals($pcc1->publish_item->export(),
-                (new Item(new HttpResponseFormat(null, null, null,
+                (new PubControl\Item(new GripControl\HttpResponseFormat(null, null, null,
                 'item')))->export());
         $this->assertEquals($pcc2->publish_channel, 'chan');
         $this->assertEquals($pcc2->publish_item->export(),
-                (new Item(new HttpResponseFormat(null, null, null,
+                (new PubControl\Item(new GripControl\HttpResponseFormat(null, null, null,
                 'item')))->export());
         $this->assertEquals($pcc3->publish_channel, 'chan');
         $this->assertEquals($pcc3->publish_item->export(),
-                (new Item(new HttpResponseFormat(null, null, null,
+                (new PubControl\Item(new GripControl\HttpResponseFormat(null, null, null,
                 'item')))->export());
         call_user_func($pcc1->publish_cb, false, 'message');
         call_user_func($pcc2->publish_cb, false, 'message');
@@ -203,7 +203,7 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
 
     public function testPublishHttpStream1()
     {
-        $pc = new GripPubControl();
+        $pc = new GripControl\GripPubControl();
         $pcc1 = new PubControlClientTestClass();
         $pcc2 = new PubControlClientTestClass();
         $pc->add_client($pcc1);
@@ -212,27 +212,27 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
         $this->assertTrue($pcc1->was_publish_called);
         $this->assertEquals($pcc1->publish_channel, 'chan');
         $this->assertEquals($pcc1->publish_item->export(),
-                (new Item(new HttpStreamFormat('content')))->export());
+                (new PubControl\Item(new GripControl\HttpStreamFormat('content')))->export());
     }
 
     public function testPublishHttpStream2()
     {
-        $pc = new GripPubControl();
+        $pc = new GripControl\GripPubControl();
         $pcc1 = new PubControlClientTestClass();
         $pcc2 = new PubControlClientTestClass();
         $pc->add_client($pcc1);
         $pc->add_client($pcc2);
-        $stream = new HttpStreamFormat('content', true);
+        $stream = new GripControl\HttpStreamFormat('content', true);
         $pc->publish_http_stream('chan', $stream, 'id', 'prev-id');
         $this->assertTrue($pcc1->was_publish_called);
         $this->assertEquals($pcc1->publish_channel, 'chan');
         $this->assertEquals($pcc1->publish_item->export(),
-                (new Item($stream, 'id', 'prev-id'))->export());
+                (new PubControl\Item($stream, 'id', 'prev-id'))->export());
     }
 
     public function testPublishHttpStreamhAsync()
     {
-        $pc = new GripPubControl();
+        $pc = new GripControl\GripPubControl();
         $callback = new CallbackTestClass();
         $pcc1 = new PubControlClientAsyncTestClass('uri');
         $pcc2 = new PubControlClientAsyncTestClass('uri');
@@ -244,13 +244,13 @@ class TestGripPubControl extends PHPUnit_Framework_TestCase
                 array($callback, "callback"));
         $this->assertEquals($pcc1->publish_channel, 'chan');
         $this->assertEquals($pcc1->publish_item->export(),
-                (new Item(new HttpStreamFormat('item')))->export());
+                (new PubControl\Item(new GripControl\HttpStreamFormat('item')))->export());
         $this->assertEquals($pcc2->publish_channel, 'chan');
         $this->assertEquals($pcc2->publish_item->export(),
-                (new Item(new HttpStreamFormat('item')))->export());
+                (new PubControl\Item(new GripControl\HttpStreamFormat('item')))->export());
         $this->assertEquals($pcc3->publish_channel, 'chan');
         $this->assertEquals($pcc3->publish_item->export(),
-                (new Item(new HttpStreamFormat('item')))->export());
+                (new PubControl\Item(new GripControl\HttpStreamFormat('item')))->export());
         call_user_func($pcc1->publish_cb, false, 'message');
         call_user_func($pcc2->publish_cb, false, 'message');
         $this->assertTrue(is_null($callback->result));

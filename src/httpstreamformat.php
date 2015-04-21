@@ -7,9 +7,11 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The HttpStreamFormat class is the format used to publish messages to
 // HTTP stream clients connected to a GRIP proxy.
-class HttpStreamFormat extends Format
+class HttpStreamFormat extends \PubControl\Format
 {
     public $content = null;
     public $close = null;
@@ -22,7 +24,7 @@ class HttpStreamFormat extends Format
         $this->content = $content;
         $this->close = $close;
         if (!$this->close && is_null($this->content))
-            throw new RuntimeException('Content not set');
+            throw new \RuntimeException('Content not set');
     }
 
     // The name used when publishing this format.

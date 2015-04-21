@@ -7,6 +7,8 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The Channel class is used to represent a channel in for a GRIP proxy and
 // tracks the previous ID of the last message.
 class Channel

@@ -7,6 +7,8 @@
     :copyright: (c) 2015 by Fanout, Inc.
     :license: MIT, see LICENSE for more details. */
 
+namespace GripControl;
+
 // The WebSocketEvent class represents WebSocket event information that is
 // used with the GRIP WebSocket-over-HTTP protocol. It includes information
 // about the type of event as well as an optional content field.
