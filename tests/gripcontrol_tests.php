@@ -92,13 +92,13 @@ class GripControlTests extends PHPUnit_Framework_TestCase
 
     public function testValidateSig()
     {
-        $token = JWT::encode(array('iss' => 'realm', 'exp' => time() + 3600),
+        $token = \Firebase\JWT\JWT::encode(array('iss' => 'realm', 'exp' => time() + 3600),
                 'key');
         assert(GripControl\GripControl::validate_sig($token, 'key'));
-        $token = JWT::encode(array('iss' => 'realm', 'exp' => time() - 3600),
+        $token = \Firebase\JWT\JWT::encode(array('iss' => 'realm', 'exp' => time() - 3600),
                 'key');
         $this->assertEquals(GripControl\GripControl::validate_sig($token, 'key'), false);
-        $token = JWT::encode(array('iss' => 'realm', 'exp' => time() + 3600),
+        $token = \Firebase\JWT\JWT::encode(array('iss' => 'realm', 'exp' => time() + 3600),
                 'key');
         $this->assertEquals(GripControl\GripControl::validate_sig($token, 'wrong_key'), false);
     }

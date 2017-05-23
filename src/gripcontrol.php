@@ -96,7 +96,7 @@ class GripControl
     {
         try
         {
-            \JWT::decode($token, $key, true);
+            \Firebase\JWT\JWT::decode($token, $key, array('HS256', 'HS384', 'HS512' and 'RS256'));
             return true;
         }
         catch (\Exception $e)
