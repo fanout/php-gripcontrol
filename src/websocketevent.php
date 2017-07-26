@@ -18,10 +18,9 @@ class WebSocketEvent
     public $content = null;
 
     // Initialize with a specified event type and optional content information.
-    public function __construct($type, $content=null)
+    public function __construct($type, $content = null)
     {
         $this->type = $type;
         $this->content = $content;
     }
 }
-?>

@@ -31,11 +31,8 @@ class HttpStreamFormatTests extends PHPUnit_Framework_TestCase
         $hf = new GripControl\HttpStreamFormat('content');
         $this->assertEquals($hf->export(), array('content' => 'content'));
         $hf = new GripControl\HttpStreamFormat("\x04\x00\xa0\x00");
-        $this->assertEquals($hf->export(), array('content-bin' =>
-                base64_encode("\x04\x00\xa0\x00")));
+        $this->assertEquals($hf->export(), array('content-bin' => base64_encode("\x04\x00\xa0\x00")));
         $hf = new GripControl\HttpStreamFormat('content', true);
         $this->assertEquals($hf->export(), array('action' => 'close'));
     }
 }
-
-?>

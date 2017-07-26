@@ -31,13 +31,13 @@ class WebSocketMessageFormat extends \PubControl\Format
     // Exports the message in the required format depending on whether the
     // message content is binary or not.
     public function export()
-    {        
+    {
         $out = array();
-        if (Encoding::is_binary_data($this->content))
+        if (Encoding::is_binary_data($this->content)) {
             $out['content-bin'] = base64_encode($this->content);
-        else
+        } else {
             $out['content'] = $this->content;
+        }
         return $out;
     }
 }
-?>

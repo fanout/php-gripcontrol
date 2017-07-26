@@ -12,5 +12,3 @@ class WebSocketEventTests extends PHPUnit_Framework_TestCase
         $this->assertEquals($we->content, 'content');
     }
 }
-
-?>

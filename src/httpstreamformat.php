@@ -19,12 +19,13 @@ class HttpStreamFormat extends \PubControl\Format
     // Initialize with either the message content or a boolean indicating that
     // the streaming connection should be closed. If neither the content nor
     // the boolean flag is set then an error will be raised.
-    public function __construct($content=null, $close=false)
+    public function __construct($content = null, $close = false)
     {
         $this->content = $content;
         $this->close = $close;
-        if (!$this->close && is_null($this->content))
+        if (!$this->close && is_null($this->content)) {
             throw new \RuntimeException('Content not set');
+        }
     }
 
     // The name used when publishing this format.
@@ -39,16 +40,15 @@ class HttpStreamFormat extends \PubControl\Format
     public function export()
     {
         $out = array();
-        if ($this->close)
+        if ($this->close) {
             $out['action'] = 'close';
-        else
-        {
-            if (Encoding::is_binary_data($this->content))
+        } else {
+            if (Encoding::is_binary_data($this->content)) {
                 $out['content-bin'] = base64_encode($this->content);
-            else
+            } else {
                 $out['content'] = $this->content;
+            }
         }
         return $out;
     }
 }
-?>
