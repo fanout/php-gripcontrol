@@ -16,5 +16,3 @@ class ResponseTests extends PHPUnit_Framework_TestCase
         $this->assertEquals($re->body, 'body');
     }
 }
-
-?>

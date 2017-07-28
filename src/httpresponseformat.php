@@ -20,8 +20,7 @@ class HttpResponseFormat extends \PubControl\Format
 
     // Initialize with the message code, reason, headers, and body to send
     // to the client when the message is published.
-    public function __construct($code=null, $reason=null,
-            $headers=null, $body=null)
+    public function __construct($code = null, $reason = null, $headers = null, $body = null)
     {
         $this->code = $code;
         $this->reason = $reason;
@@ -41,20 +40,22 @@ class HttpResponseFormat extends \PubControl\Format
     public function export()
     {
         $out = array();
-        if (!is_null($this->code))
+        if (!is_null($this->code)) {
             $out['code'] = $this->code;
-        if (!is_null($this->reason))
+        }
+        if (!is_null($this->reason)) {
             $out['reason'] = $this->reason;
-        if (!is_null($this->headers))
+        }
+        if (!is_null($this->headers)) {
             $out['headers'] = $this->headers;
-        if (!is_null($this->body))
-        {
-            if (Encoding::is_binary_data($this->body))
+        }
+        if (!is_null($this->body)) {
+            if (Encoding::is_binary_data($this->body)) {
                 $out['body-bin'] = base64_encode($this->body);
-            else
+            } else {
                 $out['body'] = $this->body;
+            }
         }
         return $out;
     }
 }
-?>

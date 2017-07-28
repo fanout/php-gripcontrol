@@ -12,5 +12,3 @@ class ChannelTests extends PHPUnit_Framework_TestCase
         $this->assertEquals($ch->prev_id, 'prev-id');
     }
 }
-
-?>

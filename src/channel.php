@@ -17,10 +17,9 @@ class Channel
     public $prev_id = null;
 
     // Initialize with the channel name and an optional previous ID.
-    public function __construct($name, $prev_id=null)
+    public function __construct($name, $prev_id = null)
     {
         $this->name = $name;
         $this->prev_id = $prev_id;
     }
 }
-?>

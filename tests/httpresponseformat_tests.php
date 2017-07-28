@@ -25,15 +25,15 @@ class HttpResponseFormatTests extends PHPUnit_Framework_TestCase
     public function testExport()
     {
         $hf = new GripControl\HttpResponseFormat('code', 'reason', 'headers', 'body');
-        $this->assertEquals($hf->export(), array('code' => 'code',
-                'reason' => 'reason', 'headers' => 'headers',
-                'body' => 'body'));
+        $this->assertEquals($hf->export(), array(
+            'code' => 'code',
+            'reason' => 'reason',
+            'headers' => 'headers',
+            'body' => 'body'
+        ));
         $hf = new GripControl\HttpResponseFormat(null, null, null, "\x04\x00\xa0\x00");
-        $this->assertEquals($hf->export(), array('body-bin' =>
-                base64_encode("\x04\x00\xa0\x00")));
+        $this->assertEquals($hf->export(), array('body-bin' => base64_encode("\x04\x00\xa0\x00")));
         $hf = new GripControl\HttpResponseFormat();
         $this->assertEquals($hf->export(), array());
     }
 }
-
-?>
