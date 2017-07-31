@@ -19,17 +19,15 @@
         "phpunit/phpunit": "3.7.14"
     },
     "autoload": {
-        "files": ["src/encoding.php",
-                  "src/websocketmessageformat.php",
-                  "src/websocketevent.php",
-                  "src/httpresponseformat.php",
-                  "src/httpstreamformat.php",
-                  "src/response.php",
-                  "src/channel.php",
-                  "src/grippubcontrol.php",
-                  "src/gripcontrol.php"]
+        "psr-4": {
+            "GripControl\\": "src"
+        }
     },
-    "target-dir": "fanout/php-gripcontrol",
+    "autoload-dev": {
+        "psr-4": {
+            "GripControl\\Test\\": "tests"
+        }
+    },
     "minimum-stability": "dev",
     "scripts": {
         "check-style": "phpcs -p --standard=PSR2 --runtime-set ignore_errors_on_exit 1 --runtime-set ignore_warnings_on_exit 1 src tests",

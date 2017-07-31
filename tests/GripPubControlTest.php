@@ -1,79 +1,16 @@
 <?php
 
-class GripPubControlTestClass extends GripControl\GripPubControl
-{
-    public function getClients()
-    {
-        return $this->clients;
-    }
+namespace GripControl\Test;
 
-    public function getPcccbHandlers()
-    {
-        return $this->pcccbhandlers;
-    }
-}
+use GripControl;
+use GripControl\Test\Fixtures\GripPubControlTestClass;
+use GripControl\Test\Fixtures\PubControlClientTestClass;
+use GripControl\Test\Fixtures\PubControlClientAsyncTestClass;
+use GripControl\Test\Fixtures\GripPubControlTestClassNoAsync;
+use GripControl\Test\Fixtures\CallbackTestClass;
+use PubControl;
 
-class PubControlClientTestClass
-{
-    public $was_finish_called = false;
-    public $was_publish_called = false;
-    public $publish_channel = false;
-    public $publish_item = false;
-
-    public function finish()
-    {
-        $this->was_finish_called = true;
-    }
-
-    public function publish($channel, $item)
-    {
-        $this->was_publish_called = true;
-        $this->publish_channel = $channel;
-        $this->publish_item = $item;
-    }
-}
-
-class PubControlClientAsyncTestClass
-{
-    public $publish_channel = null;
-    public $publish_item = null;
-    public $publish_cb = null;
-
-    public function publish_async($channel, $item, $callback = null)
-    {
-        $this->publish_channel = $channel;
-        $this->publish_item = $item;
-        $this->publish_cb = $callback;
-    }
-}
-
-class GripPubControlTestClassNoAsync extends GripControl\GripPubControl
-{
-    public function is_async_supported()
-    {
-        return false;
-    }
-}
-
-class CallbackTestClass extends Stackable
-{
-    public $was_callback_called = false;
-    public $result = null;
-    public $message = null;
-
-    public function callback($result, $message)
-    {
-        $this->result = $result;
-        $this->message = $message;
-        $this->was_callback_called = true;
-    }
-
-    public function run()
-    {
-    }
-}
-
-class TestGripPubControl extends PHPUnit_Framework_TestCase
+class GripPubControlTest extends \PHPUnit_Framework_TestCase
 {
     public function testInitialize()
     {

@@ -1,6 +1,6 @@
 <?php
 
-/*  response.php
+/*  Response.php
     ~~~~~~~~~
     This module implements the Response class.
     :authors: Konstantin Bokarius.

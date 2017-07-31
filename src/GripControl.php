@@ -1,6 +1,6 @@
 <?php
 
-/*  gripcontrol.php
+/*  GripControl.php
     ~~~~~~~~~
     This module implements the GripControl class.
     :authors: Konstantin Bokarius.

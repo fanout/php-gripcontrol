@@ -1,6 +1,10 @@
 <?php
 
-class ChannelTests extends PHPUnit_Framework_TestCase
+namespace GripControl\Test;
+
+use GripControl;
+
+class ChannelTests extends \PHPUnit_Framework_TestCase
 {
     public function testInitialize()
     {

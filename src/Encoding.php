@@ -1,6 +1,6 @@
 <?php
 
-/*  encoding.php
+/*  Encoding.php
     ~~~~~~~~~
     This module implements the Encoding class.
     :authors: Konstantin Bokarius.

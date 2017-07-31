@@ -1,6 +1,6 @@
 <?php
 
-/*  httpresponseformat.php
+/*  HttpResponseFormat.php
     ~~~~~~~~~
     This module implements the HttpResponseFormat class.
     :authors: Konstantin Bokarius.

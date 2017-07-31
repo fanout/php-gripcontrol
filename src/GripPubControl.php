@@ -1,6 +1,6 @@
 <?php
 
-/*  grippubcontrol.php
+/*  GripPubControl.php
     ~~~~~~~~~
     This module implements the GripPubControl class.
     :authors: Konstantin Bokarius.

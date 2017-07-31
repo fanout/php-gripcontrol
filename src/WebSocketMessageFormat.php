@@ -1,6 +1,6 @@
 <?php
 
-/*  websocketmessageformat.php
+/*  WebSocketMessageFormat.php
     ~~~~~~~~~
     This module implements the WebSocketMessageFormat class.
     :authors: Konstantin Bokarius.

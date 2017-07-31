@@ -1,6 +1,6 @@
 <?php
 
-/*  channel.php
+/*  Channel.php
     ~~~~~~~~~
     This module implements the Channel class.
     :authors: Konstantin Bokarius.

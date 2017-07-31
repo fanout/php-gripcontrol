@@ -22,28 +22,14 @@ Requirements
 Installation
 ------------
 
-Using Composer: 'composer require fanout/gripcontrol' 
-
-Manual: ensure that php-jwt and php-pubcontrol have been included and require the following files in php-gripcontrol:
-
-```PHP
-require 'php-gripcontrol/src/encoding.php';
-require 'php-gripcontrol/src/channel.php';
-require 'php-gripcontrol/src/response.php';
-require 'php-gripcontrol/src/websocketevent.php';
-require 'php-gripcontrol/src/websocketmessageformat.php';
-require 'php-gripcontrol/src/httpstreamformat.php';
-require 'php-gripcontrol/src/httpresponseformat.php';
-require 'php-gripcontrol/src/grippubcontrol.php';
-require 'php-gripcontrol/src/gripcontrol.php';
-```
+`composer require fanout/gripcontrol`
 
 Asynchronous Publishing
 -----------------------
 
 In order to make asynchronous publish calls pthreads must be installed. If pthreads is not installed then only synchronous publish calls can be made. To install pthreads recompile PHP with the following flag: '--enable-maintainer-zts'
 
-Also note that since a callback passed to the publish_async methods is going to be executed in a separate thread, that callback and the class it belongs to are subject to the rules and limitations imposed by the pthreads extension.
+Also note that since a callback passed to the `publish_async` method is going to be executed in a separate thread, that callback and the class it belongs to are subject to the rules and limitations imposed by the pthreads extension.
 
 See more information about pthreads here: http://php.net/manual/en/book.pthreads.php
 

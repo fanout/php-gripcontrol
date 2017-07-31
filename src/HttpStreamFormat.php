@@ -1,6 +1,6 @@
 <?php
 
-/*  httpstreamformat.php
+/*  HttpStreamFormat.php
     ~~~~~~~~~
     This module implements the HttpStreamFormat class.
     :authors: Konstantin Bokarius.

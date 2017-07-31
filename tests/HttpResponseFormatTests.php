@@ -1,6 +1,10 @@
 <?php
 
-class HttpResponseFormatTests extends PHPUnit_Framework_TestCase
+namespace GripControl\Test;
+
+use GripControl;
+
+class HttpResponseFormatTests extends \PHPUnit_Framework_TestCase
 {
     public function testIntialize()
     {

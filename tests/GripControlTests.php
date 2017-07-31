@@ -1,24 +1,11 @@
 <?php
 
-class GripControlTestClass extends GripControl\GripControl
-{
-    public static function callParseChannels($channels)
-    {
-        return self::parse_channels($channels);
-    }
+namespace GripControl\Test;
 
-    public static function callGetHoldChannels($channels)
-    {
-        return self::get_hold_channels($channels);
-    }
+use GripControl;
+use GripControl\Test\Fixtures\GripControlTestClass;
 
-    public static function callGetHoldResponse($response)
-    {
-        return self::get_hold_response($response);
-    }
-}
-
-class GripControlTests extends PHPUnit_Framework_TestCase
+class GripControlTests extends \PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException RuntimeException

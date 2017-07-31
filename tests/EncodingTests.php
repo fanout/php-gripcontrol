@@ -1,6 +1,10 @@
 <?php
 
-class EncodingTests extends PHPUnit_Framework_TestCase
+namespace GripControl\Test;
+
+use GripControl;
+
+class EncodingTests extends \PHPUnit_Framework_TestCase
 {
     public function testIsBinaryData()
     {

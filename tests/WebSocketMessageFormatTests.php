@@ -1,6 +1,10 @@
 <?php
 
-class WebSocketMessageFormatTests extends PHPUnit_Framework_TestCase
+namespace GripControl\Test;
+
+use GripControl;
+
+class WebSocketMessageFormatTests extends \PHPUnit_Framework_TestCase
 {
     public function testIntialize()
     {

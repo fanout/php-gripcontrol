@@ -1,6 +1,6 @@
 <?php
 
-/*  websocketevent.php
+/*  WebSocketEvent.php
     ~~~~~~~~~
     This module implements the WebSocketEvent class.
     :authors: Konstantin Bokarius.
