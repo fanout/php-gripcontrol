@@ -97,7 +97,7 @@ class GripControl
     public static function validate_sig($token, $key)
     {
         try {
-            \Firebase\JWT\JWT::decode($token, $key, array('HS256', 'HS384', 'HS512' and 'RS256'));
+            \Firebase\JWT\JWT::decode($token, $key, array('HS256', 'HS384', 'HS512', 'RS256'));
             return true;
         } catch (\Exception $e) {
             return false;
